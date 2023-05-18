@@ -1,40 +1,111 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Google Map API範例</title>
     
+
+    <title>Google Map</title>
+
     <style>
-        #map{
-            width: 100%;
-            height: 500px;
+        #map {
+            width: 600px;
+            height: 400px;
+            margin: 0 auto;
+        }
+
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
         }
     </style>
 </head>
+
 <body>
     <div id="map"></div>
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBy5_SjUbRXayyiYVb9QaQSlRUW6CSM5Io&callback=initMap"></script>
+    <script src="https://unpkg.com/@googlemaps/markerclusterer/dist/index.min.js"></script>
+
+    <script async
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDvCISAnkfQVorsfjq0d3FeiiGyRurZZmw&callback=initMap">
+        </script>
+
     <script>
+
         // Initialize and add the map
-            function initMap() {
-                // The location of Uluru
-                const cityhall = { lat:25.051491931654756, lng: 121.56509707547268 };
-                // The map, centered at Uluru
-                const map = new google.maps.Map(document.getElementById("map"), {
-                    zoom: 18,
-                    center: cityhall,
+        function initMap() {
+            // The location of Uluru
+            const tibame = { lat: 25.043068219390705, lng: 121.52484999059317 };
+            // The map, centered at Uluru
+            const map = new google.maps.Map(document.getElementById("map"), {
+                zoom: 7,
+                center: tibame,
+            });
+            const contentString =
+                '<div id="content">' +
+                '<div id="siteNotice">' +
+                "</div>" +
+                '<h1 id="firstHeading" class="firstHeading">台北商業大學</h1>' +
+                '<div id="bodyContent">' +
+                "<p><b>我在這裡學</b>google<b>API</b></p>" +
+                '<p>Matcha Life<a href="https://en.wikipedia.org/w/index.php?title=Uluru&oldid=297882194">' +
+                "https://en.wikipedia.org/w/index.php?title=Uluru</a> " +
+                "(last visited May 18, 2023).</p>" +
+                "</div>" +
+                "</div>";
+            const infowindow = new google.maps.InfoWindow({
+                content: contentString,
+                ariaLabel: "Tibame",
+            });
+             const dogewindow = new google.maps.InfoWindow({
+                content: "這裡有柴柴",
+                ariaLabel: "Doge",
+            });
+            const img = 'img/doge_1-removebg-preview.png'
+            const marker = new google.maps.Marker({
+                position: tibame,
+                map: map,
+                title: "Tibame",
+                icon: 'img/Computer-Guy-removebg-preview 1.png'
+            });
+
+            marker.addListener("click", () => {
+                infowindow.open({
+                    anchor: marker,
+                    map
+
                 });
-                // The marker, positioned at Uluru
-                const marker = new google.maps.Marker({
-                    position: cityhall,
+            });
+            for(let i = 0; i < locations.length; i++){
+                const markers = new google.maps.Marker({
+                    position: locations[i],
                     map: map,
-                    title: "台北市政府"
+                    title: `Doge${i}`,
+                    icon: img
+                })
+                markers.addListener("click", () => {
+                dogewindow.open({
+                    anchor: markers,
+                    map
+
                 });
+            });
             }
 
-            window.initMap = initMap;
+        }
+        const locations = [
+            { lat: 27, lng: 120 },
+            { lat: 25, lng:125 },
+            { lat: 24, lng:123 },
+            { lat:23, lng: 124},
+       
+        ];
+        window.initMap = initMap;
     </script>
+   
 </body>
+
 </html>
